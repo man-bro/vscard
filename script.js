@@ -1,63 +1,73 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Digital business card loaded.");
-
   const card = document.querySelector(".card");
+  const emailText = document.querySelector(".email-text");
+  const copyEmailBtn = document.querySelector("#copyEmailBtn");
+
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (error) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      const result = document.execCommand("copy");
+      document.body.removeChild(textarea);
+
+      return result;
+    }
+  };
+
+  const showCopyMessage = (target, originalText) => {
+    target.textContent = "이메일 복사 완료!";
+
+    setTimeout(() => {
+      target.textContent = originalText;
+    }, 1500);
+  };
 
   if (card) {
-    card.style.transition = "transform 0.25s ease, box-shadow 0.25s ease";
-
     card.addEventListener("mouseenter", () => {
       card.style.transform = "translateY(-10px)";
-      card.style.boxShadow =
-        "0 0 25px rgba(60, 161, 251, 0.35), 0 25px 50px rgba(0, 0, 0, 0.6)";
     });
 
     card.addEventListener("mouseleave", () => {
       card.style.transform = "translateY(0)";
-      card.style.boxShadow =
-        "0 0 15px rgba(60, 161, 251, 0.2), 0 0 30px rgba(60, 161, 251, 0.1), 0 15px 40px rgba(0, 0, 0, 0.5)";
     });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (emailText) {
+    emailText.style.cursor = "pointer";
 
-  const valueElements = document.querySelectorAll(".value");
+    emailText.addEventListener("click", async () => {
+      const email = emailText.textContent.trim();
+      const copied = await copyToClipboard(email);
 
-  valueElements.forEach((valueElement) => {
-    const text = valueElement.textContent.trim();
+      if (copied) {
+        showCopyMessage(emailText, email);
+      }
+    });
+  }
 
-    if (emailRegex.test(text)) {
-      valueElement.style.cursor = "pointer";
-      valueElement.title = "클릭하면 이메일이 복사됩니다.";
+  if (copyEmailBtn && emailText) {
+    copyEmailBtn.addEventListener("click", async () => {
+      const email = emailText.textContent.trim();
+      const copied = await copyToClipboard(email);
 
-      valueElement.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(text);
+      if (copied) {
+        const originalText = copyEmailBtn.textContent;
+        copyEmailBtn.textContent = "복사 완료!";
 
-          const originalText = valueElement.textContent;
-          valueElement.textContent = "이메일이 복사되었습니다!";
-
-          setTimeout(() => {
-            valueElement.textContent = originalText;
-          }, 1500);
-        } catch (error) {
-          console.error("이메일 복사 실패:", error);
-
-          const tempInput = document.createElement("input");
-          tempInput.value = text;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand("copy");
-          document.body.removeChild(tempInput);
-
-          const originalText = valueElement.textContent;
-          valueElement.textContent = "이메일이 복사되었습니다!";
-
-          setTimeout(() => {
-            valueElement.textContent = originalText;
-          }, 1500);
-        }
-      });
-    }
-  });
+        setTimeout(() => {
+          copyEmailBtn.textContent = originalText;
+        }, 1500);
+      }
+    });
+  }
 });
