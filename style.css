@@ -26,16 +26,19 @@ body {
     0 0 15px rgba(60, 161, 251, 0.2),
     0 0 30px rgba(60, 161, 251, 0.1),
     0 15px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 0 25px rgba(60, 161, 251, 0.35),
+    0 25px 50px rgba(0, 0, 0, 0.6);
 }
 
 .card-header {
   height: 140px;
-  background: linear-gradient(
-    135deg,
-    #0f172a 0%,
-    #1e293b 50%,
-    #3ca1fb 100%
-  );
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #3ca1fb 100%);
 }
 
 .card-content {
@@ -99,12 +102,6 @@ body {
   border: 1px solid #374151;
   background: #1f2937;
   text-align: left;
-  transition: all 0.2s ease;
-}
-
-.info-item:hover {
-  border-color: #3ca1fb;
-  transform: translateY(-2px);
 }
 
 .icon {
@@ -131,6 +128,23 @@ body {
   font-weight: 600;
   color: #f8fafc;
   word-break: break-all;
+  cursor: default;
+  user-select: text;
+}
+
+.copy-message {
+  margin-top: 18px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #3ca1fb;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.copy-message.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 .actions {
@@ -147,6 +161,8 @@ body {
   font-weight: 700;
   text-align: center;
   transition: all 0.2s ease;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .btn-primary {
@@ -155,20 +171,10 @@ body {
   border: 1px solid #3ca1fb;
 }
 
-.btn-primary:hover {
-  background: #2593f5;
-  box-shadow: 0 0 15px rgba(60, 161, 251, 0.4);
-}
-
 .btn-secondary {
   background: #1f2937;
   color: #ffffff;
   border: 1px solid #3ca1fb;
-}
-
-.btn-secondary:hover {
-  background: #374151;
-  box-shadow: 0 0 15px rgba(60, 161, 251, 0.25);
 }
 
 .btn:hover {
@@ -191,22 +197,4 @@ body {
   .actions {
     flex-direction: column;
   }
-}
-.card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.copy-message {
-  margin-top: 18px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #3ca1fb;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-.copy-message.show {
-  opacity: 1;
-  visibility: visible;
 }
