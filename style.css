@@ -178,20 +178,29 @@ body {
   border: 1px solid #3ca1fb;
 }
 
+.portfolio-btn,
 .github-btn {
   display: block;
   width: 100%;
-  margin-top: 14px;
   background: #1f2937;
   color: #ffffff;
   border: 1px solid #3ca1fb;
   border-radius: 10px;
 }
 
+.portfolio-btn {
+  margin-top: 24px;
+}
+
+.github-btn {
+  margin-top: 14px;
+}
+
 .btn:hover {
   transform: translateY(-2px);
 }
 
+.portfolio-btn:hover,
 .github-btn:hover {
   background: #253247;
   box-shadow: 0 0 14px rgba(60, 161, 251, 0.25);
