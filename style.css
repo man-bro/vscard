@@ -192,3 +192,21 @@ body {
     flex-direction: column;
   }
 }
+.card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.copy-message {
+  margin-top: 18px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #3ca1fb;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.copy-message.show {
+  opacity: 1;
+  visibility: visible;
+}

@@ -1,36 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const card = document.querySelector(".card");
-  const emailText = document.querySelector(".email-text");
+  const emailText = document.querySelector("#emailText");
   const copyEmailBtn = document.querySelector("#copyEmailBtn");
-
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch (error) {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.style.position = "fixed";
-      textarea.style.left = "-9999px";
-
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-
-      const result = document.execCommand("copy");
-      document.body.removeChild(textarea);
-
-      return result;
-    }
-  };
-
-  const showCopyMessage = (target, originalText) => {
-    target.textContent = "이메일 복사 완료!";
-
-    setTimeout(() => {
-      target.textContent = originalText;
-    }, 1500);
-  };
+  const copyMessage = document.querySelector("#copyMessage");
 
   if (card) {
     card.addEventListener("mouseenter", () => {
@@ -42,32 +14,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (emailText) {
-    emailText.style.cursor = "pointer";
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (error) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
 
-    emailText.addEventListener("click", async () => {
-      const email = emailText.textContent.trim();
-      const copied = await copyToClipboard(email);
+      document.body.appendChild(textarea);
+      textarea.select();
 
-      if (copied) {
-        showCopyMessage(emailText, email);
-      }
-    });
-  }
+      const copied = document.execCommand("copy");
+      document.body.removeChild(textarea);
 
-  if (copyEmailBtn && emailText) {
+      return copied;
+    }
+  };
+
+  if (copyEmailBtn && emailText && copyMessage) {
     copyEmailBtn.addEventListener("click", async () => {
       const email = emailText.textContent.trim();
+
       const copied = await copyToClipboard(email);
 
-      if (copied) {
-        const originalText = copyEmailBtn.textContent;
-        copyEmailBtn.textContent = "복사 완료!";
-
-        setTimeout(() => {
-          copyEmailBtn.textContent = originalText;
-        }, 1500);
+      if (!copied) {
+        alert("이메일 복사에 실패했습니다.");
+        return;
       }
+
+      copyMessage.classList.add("show");
+
+      setTimeout(() => {
+        copyMessage.classList.remove("show");
+      }, 1500);
     });
   }
 });
